@@ -1,0 +1,12 @@
+th{background-color:gray;color:white;border-radius: 3px;}
+
+.listtable{margin:auto;margin-bottom:6%;margin-top:3%;
+}
+
+th,td{padding:6px;}
+
+td{border-style:solid;border-radius:3px;border-width:1px;}
+
+table{border-spacing: 6px;}
+
+table, td, th {border-collapse:separate}
