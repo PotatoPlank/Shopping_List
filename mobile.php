@@ -6,14 +6,14 @@ ob_start();
 <html lang="en">
 <?php
 include("includes/mysqli.php");
+include("includes/functions.php");
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
 $listcount =0;
 $currtime = date('H:i:s', time());
-if (!isset($_SESSION['name'])){
-  print $_SESSION['name'];
-  header("Location: http://shop.sugarbombed.com/welcome.php");
+if (!isset($_SESSION['user']) or $_SESSION['user']==''){
+  header("Location: " . redirecturl() ."/welcome.php");
 }
 $platform = 'mobile';
  ?>
@@ -97,6 +97,7 @@ $platform = 'mobile';
               $result = mysqli_query($con, "SELECT * FROM currentlist WHERE qty > '0' ORDER BY aisle");
               print '<table class="listtable">';
               $rowcount = $result->num_rows;
+              if ($rowcount != 0){
               print '<th> Qty </th>';
               print '<th> Name </th>';
               print '<th> Price </th>';
@@ -152,6 +153,9 @@ $platform = 'mobile';
               print '<td style="border-style:none;"></td>';
               print '</tr>';
               print '</table>';
+            }else{
+              echo '<h2>No items need to be bought currently!</h2>';
+            }
                ?>
 
               <?php

@@ -5,36 +5,51 @@ ob_start();
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include("includes/mysqli.php");
-include("includes/functions.php");
-if (isset($_POST['newlist']) and $_POST['name'] != ''){
-  $listname = $_POST['name'];
-  $listname = cleanup($listname);
-  $newlist = createnewlist($listname);
-  if ($newlist != false){
-    if(ismobile()){
-      header("Location: " . redirecturl() ."/mobile.php");
-    }else {
-      header("Location: " . redirecturl() ."/index.php");
-    }
-  }else{
-    print '<center><b>Something went wrong creating a new list!</b></center>';
-  }
-}elseif ($_POST['name'] == '' and isset($_POST['newlist'])){
-  print '<center><b>You need to enter a list name!</b></center>';
-}
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
  ?>
 <head>
-
+  <?php
+  include("includes/mysqli.php");
+  include("includes/functions.php");
+if (isset($_POST['reg'])){
+  register();
+}
+  function register(){
+    $error='good';
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $username = cleanup($username);
+    $email = cleanup($email);
+    $password = cleanup($password);
+    if (reg_pass($password) == false){
+      $error = 'pass_reg';
+    }else{
+      $password = hash('sha256', $password);
+    }
+    if (reg_email($email) == false){
+      $error = 'email_reg';
+    }
+    if (reg_user($username) == false){
+      $error = 'user_reg';
+    }
+    if ($error =='good'){
+      register_qry($username,$password,$email);
+      unset($username);
+      unset($password);
+      unset($email);
+      header("Location: " . redirecturl() ."/welcome.php");
+    }
+  }
+  ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Create New Shopping List</title>
+    <title>Register</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -53,20 +68,15 @@ $date = date('m/d/Y', time());
     <!-- Navigation -->
     <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
         <div class="container">
-            <a class="navbar-brand" href="newlist.php">Create A New List</a>
+            <a class="navbar-brand" href="register.php">Register</a>
             <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
             <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
             <div class="clearfix hidden-md-up"></div>
             <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
                 <ul class="nav navbar-nav float-md-right">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Current List</a>
+                        <a class="nav-link" href="welcome.php">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mobile.php">Mobile View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Manage Cart</a>
                     </li>
                 </ul>
             </div>
@@ -77,14 +87,17 @@ $date = date('m/d/Y', time());
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-xs-center">
-              <h1>Create New Shopping List</h1>
+              <h1>Register</h1>
+              <p>Who are you?</p>
               <?php
-              print "<form action=\"newlist.php\" method=\"post\">
-              <input type=\"text\" name=\"name\" placeholder=\"List name\"><br>
-              <input type=\"submit\" name=\"newlist\" value=\"Submit\"><br>
+              print "<form action=\"register.php\" method=\"post\">
+              <input type=\"text\" name=\"username\" placeholder=\"Username\"><br>
+              <input type=\"email\" name=\"email\" placeholder=\"E-mail\"><br>
+              <input type=\"password\" name=\"password\" placeholder\"Password\"><br>
+              <input type=\"submit\" name=\"reg\" value=\"Submit\"><br>
             </form>";
+               ?>
 
-            ?>
 
             </div>
         </div>
@@ -99,3 +112,6 @@ $date = date('m/d/Y', time());
 </body>
 
 </html>
+<?php
+ob_end_flush();
+?>

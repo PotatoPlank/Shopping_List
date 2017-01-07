@@ -6,15 +6,15 @@ ob_start();
 <html lang="en">
 <?php
 include("includes/mysqli.php");
+include("includes/functions.php");
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
 $listcount =0;
 $currtime = date('H:i:s', time());
 $platform;
-if (!isset($_SESSION['name'])){
-  //print $_SESSION['name'];
-  header("Location: http://shop.sugarbombed.com/welcome.php");
+if (!isset($_SESSION['user']) or $_SESSION['user']==''){
+  header("Location: " . redirecturl() ."/welcome.php");
 }
 if (isset($_REQUEST['view'])){
   $platform = $_SESSION['view'];
@@ -101,7 +101,7 @@ if (isset($_REQUEST['view'])){
               $result = mysqli_query($con, "SELECT * FROM list_cart WHERE qty > '0' ORDER BY aisle");
               $rowcount = $result->num_rows;
               if($rowcount!=0){
-              print '<h1>Shopping List for <?php echo $date?></h1>';
+              print '<h1>Shopping List for'. $date . '</h1>';
               print '<table class="listtable">';
               print '<th> Qty </th>';
               print '<th> Name </th>';

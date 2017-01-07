@@ -6,19 +6,23 @@ ob_start();
 <html lang="en">
 <?php
 include("includes/mysqli.php");
+include("includes/functions.php");
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
 $listcount =0;
 $currtime = date('H:i:s', time());
-if (!isset($_SESSION['name'])){
-  print $_SESSION['name'];
-  header("Location: http://shop.sugarbombed.com/welcome.php");
+if (!isset($_SESSION['user']) or $_SESSION['user']==''){
+  header("Location: " . redirecturl() ."/welcome.php");
 }
 if (isset($_REQUEST['view'])){
   $platform = $_SESSION['view'];
 }else{
   $platform='desktop';
+}
+if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
+  logout();
+  header("Location: " . redirecturl() ."/welcome.php");
 }
  ?>
 <head>
@@ -58,7 +62,7 @@ if (isset($_REQUEST['view'])){
     $newaddby=$_GET['addby'];
     $newtime=$_GET['time'];
     $newdate=$_GET['date'];
-    db_addlist($newid,$newquan,$newname,$newprice,$newaisle,$newgroup,$newaddby,$newtime,$newdate);
+    db_addlist($newquan,$newname,$newprice,$newaisle,$newgroup,$newaddby,$newtime,$newdate);
     header("Location: http://shop.sugarbombed.com/index.php");
   }elseif ($submittype =='Remove Item'){
     $remitemid=$_GET['removelistid'];
@@ -86,6 +90,9 @@ if (isset($_REQUEST['view'])){
                     <li class="nav-item">
                         <a class="nav-link" href="cart.php">Manage Cart</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?logout=y">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -101,6 +108,7 @@ if (isset($_REQUEST['view'])){
               $result = mysqli_query($con, "SELECT * FROM currentlist WHERE qty > '0' ORDER BY aisle");
               print '<table class="listtable">';
               $rowcount = $result->num_rows;
+              if ($rowcount != 0){
               print '<th> Qty </th>';
               print '<th> Name </th>';
               print '<th> Price </th>';
@@ -164,17 +172,19 @@ if (isset($_REQUEST['view'])){
               print '<td style="border-style:none;"></td>';
               print '</tr>';
               print '</table>';
+            }else{
+              echo '<h2>No items need to be bought currently!</h2>';
+            }
                ?>
 
               <?php
-              $nextid = max($id) + 1;
               //$addlist = db_addlist();
               $listcount++;
               print "
               <form action=\"index.php\" method=\"get\">
               <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
               <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
-              <input type=\"hidden\" name=\"id\" value=\"$nextid\"><br>
+              <input type=\"hidden\" name=\"id\" value=\"" . db_nextid() . "\"><br>
               <input type=\"hidden\" name=\"date\" value=\"$sqldate\"><br>
               <h1>Add New Item</h1>
               Quantity: <input type=\"text\" name=\"quan\"><br>
