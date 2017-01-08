@@ -1,5 +1,4 @@
 <?php
-  session_start();
 Function cleanup($input){
 $input = strip_tags(trim($input));
 $clean = htmlspecialchars($input);

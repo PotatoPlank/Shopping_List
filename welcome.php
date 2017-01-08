@@ -10,8 +10,8 @@ $date = date('m/d/Y', time());
  ?>
 <head>
   <?php
-  include("includes/mysqli.php");
-  include("includes/functions.php");
+  require("includes/mysqli.php");
+  require("includes/functions.php");
 
   if (isset($_SESSION['user']) and $_SESSION['user']!=''){
     if(ismobile()){
@@ -104,23 +104,6 @@ $date = date('m/d/Y', time());
               <input type=\"password\" name=\"password\" placeholder=\"Password\"><br>
               <input type=\"submit\" name=\"signin\" value=\"Submit\"><br>
             </form>";
-
-            if ($_SESSION['user'] == 'Julia'){
-              $_SESSION['name'] = 'Julia';
-              if(ismobile()){
-                header("Location: " . redirecturl() ."/mobile.php");
-              }else {
-                header("Location: " . redirecturl() ."/index.php");
-              }
-
-            }elseif ($_SESSION['user'] == 'Joe'){
-              $_SESSION['name'] = 'Joe';
-              if(ismobile()){
-                header("Location: " . redirecturl() ."/mobile.php");
-              }else {
-                header("Location: " . redirecturl() ."/index.php");
-              }
-            }
 
 
 

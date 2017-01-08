@@ -10,8 +10,8 @@ $date = date('m/d/Y', time());
  ?>
 <head>
   <?php
-  include("includes/mysqli.php");
-  include("includes/functions.php");
+  require("includes/mysqli.php");
+  require("includes/functions.php");
 if (isset($_POST['reg'])){
   register();
 }
@@ -93,7 +93,7 @@ if (isset($_POST['reg'])){
               print "<form action=\"register.php\" method=\"post\">
               <input type=\"text\" name=\"username\" placeholder=\"Username\"><br>
               <input type=\"email\" name=\"email\" placeholder=\"E-mail\"><br>
-              <input type=\"password\" name=\"password\" placeholder\"Password\"><br>
+              <input type=\"password\" name=\"password\" placeholder=\"Password\"><br>
               <input type=\"submit\" name=\"reg\" value=\"Submit\"><br>
             </form>";
                ?>

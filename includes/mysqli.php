@@ -1,7 +1,8 @@
 <?php
-session_start();
+require('settings.php');
 function db_connect(){
-$con = mysqli_connect('localhost', '', '', '');
+$config = dbconf();
+$con = mysqli_connect($config[0], $config[1], $config[2], $config[3]);
 return $con;
 /* check connection */
 if (!$con) {
@@ -267,4 +268,20 @@ while($row = $resultlist->fetch_assoc()){
 }
 return true;
 }
+
+function deny(){
+  $conn = db_connect();
+  $checkdeny = "SELECT id, reason FROM denylist";
+  $result = mysqli_query($conn, $checkdeny);
+  while($row = $result->fetch_assoc()){
+    if ($_SESSION['usergroup'] == $row['id']){
+      return $row['reason'];
+      exit();
+    }else{
+
+    }
+  }
+  return false;
+}
+
  ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-include("mysqli.php");
+require("mysqli.php");
 $id = $_GET['id'];
 $qty = $_GET['qty'];
 $name = $_GET['name'];

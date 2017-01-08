@@ -5,8 +5,8 @@ ob_start();
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include("includes/mysqli.php");
-include("includes/functions.php");
+require("includes/mysqli.php");
+require("includes/functions.php");
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
@@ -14,6 +14,10 @@ $listcount =0;
 $currtime = date('H:i:s', time());
 if (!isset($_SESSION['user']) or $_SESSION['user']==''){
   header("Location: " . redirecturl() ."/welcome.php");
+}
+if(deny()!=false){
+  print deny();
+  exit();
 }
 if (isset($_REQUEST['view'])){
   $platform = $_SESSION['view'];
@@ -151,7 +155,6 @@ if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
                 $taxedprice = $totalprice * 1.06;
                 print '</tr>';
                 $i++;
-                $idcnt++;
               }
               $listcount = $i;
               $i=0;

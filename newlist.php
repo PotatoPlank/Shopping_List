@@ -5,8 +5,8 @@ ob_start();
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include("includes/mysqli.php");
-include("includes/functions.php");
+require("includes/mysqli.php");
+require("includes/functions.php");
 if (isset($_POST['newlist']) and $_POST['name'] != ''){
   $listname = $_POST['name'];
   $listname = cleanup($listname);

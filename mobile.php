@@ -5,8 +5,8 @@ ob_start();
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include("includes/mysqli.php");
-include("includes/functions.php");
+require("includes/mysqli.php");
+require("includes/functions.php");
 date_default_timezone_set('America/New_York');
 $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
