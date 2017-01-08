@@ -1,7 +1,7 @@
 <?php
 session_start();
 function db_connect(){
-$con = mysqli_connect('localhost', '***REMOVED***', '', '***REMOVED***');
+$con = mysqli_connect('localhost', '', '', '');
 return $con;
 /* check connection */
 if (!$con) {
