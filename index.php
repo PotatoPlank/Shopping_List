@@ -12,22 +12,10 @@ $date = date('m/d/Y', time());
 $sqldate = date('Y-m-d',time());
 $listcount =0;
 $currtime = date('H:i:s', time());
-if (!isset($_SESSION['user']) or $_SESSION['user']==''){
-  header("Location: " . redirecturl() ."/welcome.php");
-}
-if(deny()!=false){
-  print deny();
-  exit();
-}
-if (isset($_REQUEST['view'])){
-  $platform = $_SESSION['view'];
-}else{
-  $platform='desktop';
-}
 if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
   logout();
-  header("Location: " . redirecturl() ."/welcome.php");
 }
+nav_check();
  ?>
 <head>
 
@@ -67,11 +55,11 @@ if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
     $newtime=$_GET['time'];
     $newdate=$_GET['date'];
     db_addlist($newquan,$newname,$newprice,$newaisle,$newgroup,$newaddby,$newtime,$newdate);
-    header("Location: http://shop.sugarbombed.com/index.php");
+    header("Location: " . redirecturl() ."/index.php");
   }elseif ($submittype =='Remove Item'){
     $remitemid=$_GET['removelistid'];
     db_remitem($remitemid);
-    header("Location: http://shop.sugarbombed.com/index.php");
+    header("Location: " . redirecturl() ."/index.php");
 }
 }
    ?>
@@ -149,7 +137,7 @@ if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
                 print '<td>' . $aisle[$i] . '</td>';
                 print '<td>' . $addedon . '</td>';
                 print '<td>' . $addedby[$i] . '</td>';
-                print '<td><small><a href="includes/updates.php?list=current&view=' . $platform .'&function=addtocart&id=' . $id[$i] . '">IN CART </a><a href="edit.php?list=current&id=' . $id[$i] . '">EDIT</a>   <a onclick="confirmDelete('.$id[$i] .',\'' . $pname[$i] . '\')" href="#">DELETE</a></small></td>';
+                print '<td><small><a href="includes/updates.php?list=current&function=addtocart&id=' . $id[$i] . '">IN CART </a><a href="edit.php?list=current&id=' . $id[$i] . '">EDIT</a>   <a onclick="confirmDelete('.$id[$i] .',\'' . $pname[$i] . '\')" href="#">DELETE</a></small></td>';
                 $totalprice = $totalprice + $price[$i];
                 $totalqty = $totalqty + $qty[$i];
                 $taxedprice = $totalprice * 1.06;
@@ -203,14 +191,24 @@ if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
             </div>
         </div>
     </div>
-
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <div class='copy-text'>
+          <p class="navbar-text pull-left">© <?php print date('Y'); ?> - <a href="http://sugarbombed.com" target="_blank" >SugarBombed</a>
+          </p>
+          </div>
+          <div class='footer-nav'>
+            <?php build_footer();?>
+          </div>
+        </div>
+      </div>
     <!-- jQuery Version 4.x.x -->
     <script src="js/jquery.js"></script>
     <script>
     function confirmDelete(del_id,name){
       var conf = confirm("Are you sure you want to delete " + name +"?");
       if (conf == true) {
-        window.location.replace('http://shop.sugarbombed.com/includes/updates.php?list=current&function=delete&id=' + del_id)
+        window.location.replace('<?php echo redirecturl(); ?>/includes/updates.php?list=current&function=delete&id=' + del_id)
       } else {
       }
     }

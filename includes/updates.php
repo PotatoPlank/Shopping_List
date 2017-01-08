@@ -2,6 +2,7 @@
 session_start();
 ob_start();
 require("mysqli.php");
+require("functions.php");
 $id = $_GET['id'];
 $qty = $_GET['qty'];
 $name = $_GET['name'];
@@ -11,7 +12,7 @@ $pgroup = $_GET['group'];
 $addby = $_GET['addby'];
 $timeadd = $_GET['time'];
 $dateadd = $_GET['date'];
-$viewtype = $_GET['view'];
+$ismobile = $_SESSION['mobile'];
 //DELETE ITEM FROM LIST
 if ($_GET['function'] == 'delete'){
   if ($_GET['list'] == 'current'){
@@ -19,10 +20,10 @@ if ($_GET['function'] == 'delete'){
   }else{
     //Later
   }
-  if($viewtype!='mobile'){
-  header("Location: http://shop.sugarbombed.com/index.php");
+  if($ismobile==false){
+  header("Location: " . redirecturl() ."/index.php");
   }else{
-  header("Location: http://shop.sugarbombed.com/mobile.php");
+  header("Location: " . redirecturl() ."/mobile.php");
   }
 }
 
@@ -33,10 +34,10 @@ if ($_GET['function'] == 'addtocart'){
   }elseif($_GET['list'] == 'cart'){
     db_movetolist($id);
   }
-  if($viewtype!='mobile'){
-  header("Location: http://shop.sugarbombed.com/index.php");
+  if($ismobile==false){
+  header("Location: " . redirecturl() ."/index.php");
   }else{
-  header("Location: http://shop.sugarbombed.com/mobile.php");
+  header("Location: " . redirecturl() ."/mobile.php");
   }
 }
 
@@ -46,10 +47,10 @@ if ($_GET['edit'] == 'Save'){
   }else{
     //Later
   }
-  if($viewtype!='mobile'){
-header("Location: http://shop.sugarbombed.com/index.php");
+  if($ismobile==false){
+ header("Location: " . redirecturl() ."/index.php");
 }else{
-  header("Location: http://shop.sugarbombed.com/mobile.php");
+  header("Location: " . redirecturl() ."/mobile.php");
 }
 
 ?>

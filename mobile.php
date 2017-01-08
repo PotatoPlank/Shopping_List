@@ -136,7 +136,6 @@ $platform = 'mobile';
                 $taxedprice = $totalprice * 1.06;
                 print '</tr>';
                 $i++;
-                $idcnt++;
               }
               $listcount = $i;
               $i=0;
@@ -165,7 +164,17 @@ $platform = 'mobile';
             </div>
         </div>
     </div>
-
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <div class='copy-text'>
+          <p class="navbar-text pull-left">© <?php print date('Y'); ?> - <a href="http://sugarbombed.com" target="_blank" >SugarBombed</a>
+          </p>
+          </div>
+          <div class='footer-nav'>?>
+            <?php build_footer();?>
+          </div>
+        </div>
+      </div>
     <!-- jQuery Version 4.x.x -->
     <script src="js/jquery.js"></script>
 
