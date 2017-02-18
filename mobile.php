@@ -35,6 +35,10 @@ $platform = 'mobile';
     body {
         padding-top: 70px;
     }
+    #container-topbtn{
+      text-align:center;
+      margin:auto
+    }
     </style>
 
 </head>
@@ -74,7 +78,7 @@ $platform = 'mobile';
             <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
                 <ul class="nav navbar-nav float-md-right">
                     <li class="nav-item">
-                        <a class="nav-link" href="newlist.php">New List</a>
+                        <a class="nav-link" data-toggle="modal" data-target="#NewList" href="#">New List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Desktop View</a>
@@ -89,6 +93,9 @@ $platform = 'mobile';
 
     <!-- Page Content -->
     <div class="container">
+      <div id="container-topbtn">
+      <button type="button" class="btn btn-primary btn-lg" id="item-new" data-toggle="modal" data-target="#newItem">Add New Item</button>
+      </div>
         <div class="row">
             <div class="col-lg-12 text-xs-center">
               <h1>Shopping List for <?php echo $date?></h1>
@@ -156,14 +163,71 @@ $platform = 'mobile';
               echo '<h2>No items need to be bought currently!</h2>';
             }
                ?>
+               <div id="newItem" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
 
-              <?php
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Add Item</h4>
+                    </div>
+                    <div class="modal-body">
+                      <?php
+                      //$addlist = db_addlist();
+                      $listcount++;
+                      print "
+                      <form action=\"index.php\" method=\"get\">
+                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" name=\"quan\"><br>
+                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Name\" name=\"name\"><br>
+                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
+                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Aisle\" name=\"aisle\"><br>
+                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Product Type\" name=\"group\"><br>
+                      <input type=\"submit\" name=\"submit\" class=\"btn btn-primary btn\" value=\"Add Item\" />
+                      <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
+                      <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
+                      <input type=\"hidden\" name=\"id\" value=\"" . db_nextid() . "\"><br>
+                      <input type=\"hidden\" name=\"date\" value=\"$sqldate\"><br>
+                    </form>";
 
-          //  print "<form action=\"index.php\" method=\"get\"><h1>Remove List Item</h1>List #: <input type=\"text\" name=\"removelistid\"><br><input type=\"submit\" name=\"submit\" value=\"Remove Item\" /></form>";
-               ?>
+                    //  print "<form action=\"index.php\" method=\"get\"><h1>Remove List Item</h1>List #: <input type=\"text\" name=\"removelistid\"><br><input type=\"submit\" name=\"submit\" value=\"Remove Item\" /></form>";
+                         ?>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
             </div>
         </div>
     </div>
+  </div>
+  <div id="NewList" class="modal fade" role="dialog">
+   <div class="modal-dialog modal-sm">
+
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Create New List</h4>
+       </div>
+       <div class="modal-body">
+         <?php
+         print "<form action=\"includes/newlist.php\" method=\"post\">
+         <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Listname\"><br>
+         <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Store List\"><br>
+       </form>";
+       ?>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+
+   </div>
+ </div>
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
           <div class='copy-text'>
