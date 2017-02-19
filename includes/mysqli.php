@@ -11,7 +11,19 @@ if (!$con) {
     exit();
 }
 }
-
+function db_query($query){
+  $conn = db_connect();
+  $result = mysqli_query($conn, $query);
+  if($result==false){return $conn->error;;}else{return $result;}
+}
+function db_query_update($query){
+  $conn = db_connect();
+  if($conn->query($query) === TRUE){
+    return true;
+  }else{
+    return $conn->error;
+  }
+}
 function db_addlist($qty, $name, $price, $aisle, $pgroup, $addby, $timeadd, $dateadd){
   $conn = db_connect();
   $updatequery =

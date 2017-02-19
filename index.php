@@ -81,6 +81,9 @@ nav_check();
                         <a class="nav-link" data-toggle="modal" data-target="#NewList" href="#">New List</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="modal" data-target="#NewGroup" href="#">New Group</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="mobile.php">Mobile View</a>
                     </li>
                     <li class="nav-item">
@@ -176,8 +179,6 @@ nav_check();
                ?>
                <div id="newItem" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-sm">
-
-                  <!-- Modal content-->
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -187,13 +188,22 @@ nav_check();
                       <?php
                       //$addlist = db_addlist();
                       $listcount++;
+                      $sqlgetgroups="SELECT * FROM shop_pgroups";
+                      $resultgrp = db_query($sqlgetgroups);
+                      if($resultgrp  != true){echo $resultgrp;}
                       print "
                       <form action=\"index.php\" method=\"get\">
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" name=\"quan\"><br>
+                      <input type=\"number\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" value=\"1\" name=\"quan\"><br>
                       <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Name\" name=\"name\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
+                      <input type=\"number\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
                       <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Aisle\" name=\"aisle\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Product Type\" name=\"group\"><br>
+                      <select class=\"form-control\" name=\"group\" placeholder=\"Product Type\">
+                      <option></option>";
+                      while($rowgrp=$resultgrp->fetch_assoc()){
+                        echo "<option value='$rowgrp[name]'>$rowgrp[name]</option>";
+                      }
+                      echo"
+                      </select><br />
                       <input type=\"submit\" name=\"submit\" class=\"btn btn-primary btn\" value=\"Add Item\" />
                       <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
                       <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
@@ -224,7 +234,7 @@ nav_check();
                    <div class="modal-body">
                      <?php
                      print "<form action=\"includes/newlist.php\" method=\"post\">
-                     <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Listname\"><br>
+                     <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"List Name\"><br>
                      <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Store List\"><br>
                    </form>";
                    ?>
@@ -236,7 +246,30 @@ nav_check();
 
                </div>
              </div>
+             <div id="NewGroup" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-sm">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create New Group</h4>
+                  </div>
+                  <div class="modal-body">
+                    <?php
+                    print "<form action=\"includes/creategroup.php\" method=\"post\">
+                    <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Group Name\"><br>
+                    <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Create\"><br>
+                  </form>";
+                  ?>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
             </div>
         </div>
     </div>
