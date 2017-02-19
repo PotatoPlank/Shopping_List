@@ -17,10 +17,15 @@ function dbconf(){
     return array($dburl,$dbusername,$dbpassword,$dbname);
 }
 function isproduction(){
-  if($_SERVER['HTTP_HOST'] == 'localhost'){
+  if($_SERVER['HTTP_HOST'] != 'localhost'){
     return true;
   }else{
     return false;
   }
 }
+date_default_timezone_set('America/New_York');
+$date = date('m/d/Y', time());
+$sqldate = date('Y-m-d',time());
+$listcount =0;
+$currtime = date('H:i:s', time());
  ?>
