@@ -1,4 +1,5 @@
-th{background-color:gray;color:white;border-radius: 3px;}.listtable{margin:auto;margin-bottom:6%;margin-top:3%;}
+th{background-color:gray;color:white;border-radius: 3px;}
+.listtable{margin:auto;margin-bottom:6%;margin-top:3%;}
 th,td{padding:6px;}
 td{border-style:solid;border-radius:3px;border-width:1px;}
 table{border-spacing: 6px;}
@@ -8,5 +9,4 @@ body{padding-bottom:10%;}
 .navbar-text{color:white;}
 .copy-text{position:fixed;left:3%;}
 .footer-nav{position:fixed;left:15%;}
-.btn-danger{}
 .btn-primary{background-color:#337ab7;}

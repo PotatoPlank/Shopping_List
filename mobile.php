@@ -1,6 +1,5 @@
 <?php
 session_start();
-ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,13 +31,7 @@ $platform = 'mobile';
     <link href="css/stylesheet.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-    body {
-        padding-top: 70px;
-    }
-    #container-topbtn{
-      text-align:center;
-      margin:auto
-    }
+    #container-topbtn{text-align:center;margin:auto}
     </style>
 
 </head>
@@ -69,27 +62,18 @@ $platform = 'mobile';
    ?>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Shopping List</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#NewList" href="#">New List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Desktop View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Manage Cart</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Shopping List</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="" data-toggle="modal" data-target="#NewList">New List</a></li>
+          <li><a href="index.php">Desktop View</a></li>
+          <li><a href="cart.php">Manage Cart</a></li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Page Content -->
     <div class="container">
@@ -163,7 +147,7 @@ $platform = 'mobile';
               echo '<h2>No items need to be bought currently!</h2>';
             }
                ?>
-               <div id="newItem" class="modal fade" role="dialog">
+               <div id="newItem" class="modal hide fade" role="dialog">
                 <div class="modal-dialog modal-sm">
 
                   <!-- Modal content-->
@@ -176,13 +160,58 @@ $platform = 'mobile';
                       <?php
                       //$addlist = db_addlist();
                       $listcount++;
+                      $sqlgetgroups="SELECT * FROM shop_pgroups";
+                      $resultgrp = db_query($sqlgetgroups);
+                      if($resultgrp  != true){echo $resultgrp;}
                       print "
                       <form action=\"index.php\" method=\"get\">
                       <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" name=\"quan\"><br>
                       <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Name\" name=\"name\"><br>
                       <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Aisle\" name=\"aisle\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Product Type\" name=\"group\"><br>
+                      <select class=\"form-control\" name=\"aisle\" placeholder=\"Aisle\">
+                      <option></option>
+                      <option>1A</option>
+                      <option>2A</option>
+                      <option>3A</option>
+                      <option>4A</option>
+                      <option>4B</option>
+                      <option>5A</option>
+                      <option>6A</option>
+                      <option>7A</option>
+                      <option>13A</option>
+                      <option>13B</option>
+                      <option>14A</option>
+                      <option>14B</option>
+                      <option>15A</option>
+                      <option>15B</option>
+                      <option>16A</option>
+                      <option>16B</option>
+                      <option>17A</option>
+                      <option>17B</option>
+                      <option>18A</option>
+                      <option>18B</option>
+                      <option>19A</option>
+                      <option>19B</option>
+                      <option>20</option>
+                      <option>21</option>
+                      <option>22</option>
+                      <option>Beverage Center</option>
+                      <option>Frozen</option>
+                      <option>Deli</option>
+                      <option>Dairy</option>
+                      <option>Bakery</option>
+                      <option>Seafood</option>
+                      <option>Meat</option>
+                      <option>Alcohol</option>
+                      <option>Produce</option>
+                      </select><br />
+                      <select class=\"form-control\" name=\"group\" placeholder=\"Product Type\">
+                      <option></option>";
+                      while($rowgrp=$resultgrp->fetch_assoc()){
+                        echo "<option value='$rowgrp[name]'>$rowgrp[name]</option>";
+                      }
+                      echo"
+                      </select><br />
                       <input type=\"submit\" name=\"submit\" class=\"btn btn-primary btn\" value=\"Add Item\" />
                       <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
                       <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
@@ -197,7 +226,7 @@ $platform = 'mobile';
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                       </div>
                     </div>
-  
+
                   </div>
                 </div>
             </div>
@@ -239,11 +268,9 @@ $platform = 'mobile';
           </div>
         </div>
       </div>
-    <!-- jQuery Version 4.x.x -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.js"></script>
+      <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
 
 </body>
 

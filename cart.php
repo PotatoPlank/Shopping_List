@@ -37,9 +37,6 @@ if (isset($_REQUEST['view'])){
     <link href="css/stylesheet.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-    body {
-        padding-top: 70px;
-    }
     </style>
 
 </head>
@@ -70,27 +67,18 @@ if (isset($_REQUEST['view'])){
    ?>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Shopping List</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Desktop View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mobile.php">Mobile View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="newlist.php">New List</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Shopping List</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="" data-toggle="modal" data-target="#NewList">New List</a></li>
+          <li><a href="index.php">Desktop View</a></li>
+          <li><a href="mobile.php">Mobile View</a></li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Page Content -->
     <div class="container">
@@ -169,9 +157,6 @@ if (isset($_REQUEST['view'])){
             </div>
         </div>
     </div>
-
-    <!-- jQuery Version 4.x.x -->
-    <script src="js/jquery.js"></script>
     <script>
     function confirmDelete(){
       var conf = confirm("Press a button!");
@@ -182,9 +167,9 @@ if (isset($_REQUEST['view'])){
       }
     }
     </script>
-    <!-- Bootstrap Core JavaScript -->
+    <script src="js/jquery.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 
 </html>

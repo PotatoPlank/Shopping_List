@@ -27,9 +27,6 @@ $listtoedit = $_GET['list'];
     <link href="css/stylesheet.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-    body {
-        padding-top: 70px;
-    }
     </style>
 
 </head>
@@ -37,28 +34,17 @@ $listtoedit = $_GET['list'];
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="newlist.php">Create A New List</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Current List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mobile.php">Mobile View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Manage Cart</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Shopping List</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="index.php">Desktop View</a></li>
+          <li><a href="mobile.php">Mobile View</a></li>
+          <li><a href="cart.php">Manage Cart</a></li>
+        </ul>
+      </div>
+    </div>
     <!-- Page Content -->
     <div class="container">
         <div class="row">
@@ -126,10 +112,8 @@ $listtoedit = $_GET['list'];
         </div>
     </div>
 
-    <!-- jQuery Version 4.x.x -->
     <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
 </body>

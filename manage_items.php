@@ -1,7 +1,5 @@
 <?php
 session_start();
-ob_start();
-error_reporting(-1);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,102 +22,44 @@ $platform='';
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
     <style>
-    body {padding-top: 70px;}
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Manage Items</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Manage Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#NewItem" href="#">Create New Item</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Shopping List</a>
+        <ul class="nav">
+          <li class="active"><a href="index.php">Home</a></li>
+          <li><a href="cart.php">Manage Cart</a></li>
+        </ul>
+      </div>
+    </div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-xs-center">
-              <h1>Shopping List for <?php echo $date?></h1>
+            <div class="">
+              <h1>Manage Items</h1>
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Dropdown
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
               <?php
-              $result = db_query("SELECT * FROM currentlist");
-              if($result==false){echo 'died';}else{$row=$result->fetch_assoc();echo $row['aisle'];var_dump($result);}
-              $con = db_connect();
-              $result = mysqli_query($con, "SELECT * FROM currentlist WHERE qty > '0' ORDER BY aisle");
-              print '<table class="listtable">';
-              $rowcount = $result->num_rows;
-              if ($rowcount != 0){
-              print '<th> Qty </th>';
-              print '<th> Name </th>';
-              print '<th> Price </th>';
-              print '<th> Aisle </th>';
-              print '<th> Edit </th>';
-              $i = 0;
-            while($row = $result->fetch_assoc()){
-              if ($i != $result->num_rows){
-                //var_dump($row);
-                $id[] = $row['id'];
-                $qty[] = $row['qty'];
-                $pname[] = $row['name'];
-                $price[] = $row['price'];
-                $aisle[] = $row['aisle'];
-                $pgroup[] = $row['product_group'];
-                $addedby[] = $row['add_by'];
-                $timeadd[] = $row['time_add'];
-                $dateadd[] = $row['date_add'];
-                $i++;
+              $sqlStores = "SELECT * FROM stores";
+              $result = db_query($sqlStores);
+              if($result != true){echo $result;}
+              while ($row=$result->fetch_assoc()) {
+
               }
-              }
-              $i = 0;
-              $totalprice = 0;
-              $totalqty = 0;
-              while($i != count($pname)) {
-                $addedon = new DateTime($dateadd[$i] . ' ' . $timeadd[$i]);
-                $addedon = $addedon->format('m/d/Y h:i a');
-                print '<tr>';
-                print '<td>' . $qty[$i] . '</td>';
-                print '<td><small>' . $pname[$i] . '</small></td>';
-                print '<td>$' . $price[$i] . '</td>';
-                print '<td>' . $aisle[$i] . '</td>';
-                print '<td><small><a href="includes/updates.php?list=current&view=' . $platform .'&function=addtocart&id=' . $id[$i] . '">IN CART</a><br /><br /><a href="edit.php?list=current&view=' . $platform .'&id=' . $id[$i] . '">EDIT</a> </small></td>';
-                $totalprice = $totalprice + $price[$i];
-                $totalqty = $totalqty + $qty[$i];
-                $taxedprice = $totalprice * 1.06;
-                print '</tr>';
-                $i++;
-              }
-              $listcount = $i;
-              $i=0;
-              print '<tr style="border-style:none;">';
-              print '<td style="color:white;background-color:gray;border-radius:3px;">' . $totalqty . '</td>';
-              print '<td style="border-style:none;"></td>';
-              print '<td style="color:white;background-color:gray;border-radius:3px;">$' . $totalprice . '</td>';
-              print '<td style="border-style:none;"></td>';
-              print '</tr>';
-              print '<tr style="border-style:none;">';
-              print '<td style="border-style:none;"></td>';
-              print '<td style="border-style:solid;border-width:1px;">Taxed Total: </td>';
-              print '<td style="color:white;background-color:gray;border-radius:3px;">$' . round($taxedprice,2) . '</td>';
-              print '<td style="border-style:none;"></td>';
-              print '</tr>';
-              print '</table>';
-            }else{
-              echo '<h2>No items need to be bought currently!</h2>';
-            }
                ?>
-               <div id="newItem" class="modal fade" role="dialog">
+               <div id="newItem" class="modal hide fade" role="dialog">
                 <div class="modal-dialog modal-sm">
 
                   <!-- Modal content-->
@@ -195,10 +135,9 @@ $platform='';
           </div>
         </div>
       </div>
-    <!-- jQuery Version 4.x.x -->
-    <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
+    <script src="js/jquery.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
 </body>

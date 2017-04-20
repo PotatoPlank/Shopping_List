@@ -1,6 +1,5 @@
 <?php
 session_start();
-ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,31 +17,20 @@ if (isset($_REQUEST['logout']) and $_REQUEST['logout'] == 'y'){
 nav_check();
  ?>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Shopping List</title>
-
-    <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
-    body {
-        padding-top: 70px;
-    }
-    #container-topbtn{
-      text-align:center;
-      margin:auto
-    }
+
+        #container-topbtn{text-align:center;margin:auto;}
+        .navbar-inverse{margin-top:none;}
     </style>
-
 </head>
-
 <body>
 
   <?php
@@ -69,37 +57,23 @@ nav_check();
    ?>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Shopping List</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#NewList" href="#">New List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#NewGroup" href="#">New Group</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mobile.php">Mobile View</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">Manage Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?logout=y">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Shopping List</a>
+        <ul class="nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="" data-toggle="modal" data-target="#NewList">New List</a></li>
+          <li><a href="" data-toggle="modal" data-target="#NewGroup">New Group</a></li>
+          <li><a href="mobile.php">Mobile View</a></li>
+          <li><a href="cart.php">Manage Cart</a></li>
+          <li><a href="index.php?logout=y">Logout</a></li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Page Content -->
     <div id="container-topbtn">
-    <button type="button" class="btn btn-primary btn-lg" id="item-new" data-toggle="modal" data-target="#newItem">Add New Item</button>
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newItem">Add New Item</button>
     </div>
     <div class="container">
         <div class="row">
@@ -177,102 +151,137 @@ nav_check();
               echo '<h2>No items need to be bought currently!</h2>';
             }
                ?>
-               <div id="newItem" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-sm">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Add Item</h4>
-                    </div>
-                    <div class="modal-body">
-                      <?php
-                      //$addlist = db_addlist();
-                      $listcount++;
-                      $sqlgetgroups="SELECT * FROM shop_pgroups";
-                      $resultgrp = db_query($sqlgetgroups);
-                      if($resultgrp  != true){echo $resultgrp;}
-                      print "
-                      <form action=\"index.php\" method=\"get\">
-                      <input type=\"number\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" value=\"1\" name=\"quan\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Name\" name=\"name\"><br>
-                      <input type=\"number\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
-                      <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Aisle\" name=\"aisle\"><br>
-                      <select class=\"form-control\" name=\"group\" placeholder=\"Product Type\">
-                      <option></option>";
-                      while($rowgrp=$resultgrp->fetch_assoc()){
-                        echo "<option value='$rowgrp[name]'>$rowgrp[name]</option>";
-                      }
-                      echo"
-                      </select><br />
-                      <input type=\"submit\" name=\"submit\" class=\"btn btn-primary btn\" value=\"Add Item\" />
-                      <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
-                      <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
-                      <input type=\"hidden\" name=\"id\" value=\"" . db_nextid() . "\"><br>
-                      <input type=\"hidden\" name=\"date\" value=\"$sqldate\"><br>
-                    </form>";
-
-                  //  print "<form action=\"index.php\" method=\"get\"><h1>Remove List Item</h1>List #: <input type=\"text\" name=\"removelistid\"><br><input type=\"submit\" name=\"submit\" value=\"Remove Item\" /></form>";
-                       ?>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div id="NewList" class="modal fade" role="dialog">
-               <div class="modal-dialog modal-sm">
-
-                 <!-- Modal content-->
-                 <div class="modal-content">
-                   <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                     <h4 class="modal-title">Create New List</h4>
-                   </div>
-                   <div class="modal-body">
-                     <?php
-                     print "<form action=\"includes/newlist.php\" method=\"post\">
-                     <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"List Name\"><br>
-                     <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Store List\"><br>
-                   </form>";
-                   ?>
-                   </div>
-                   <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                   </div>
-                 </div>
-
-               </div>
-             </div>
-             <div id="NewGroup" class="modal fade" role="dialog">
-              <div class="modal-dialog modal-sm">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Create New Group</h4>
-                  </div>
-                  <div class="modal-body">
-                    <?php
-                    print "<form action=\"includes/creategroup.php\" method=\"post\">
-                    <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Group Name\"><br>
-                    <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Create\"><br>
-                  </form>";
-                  ?>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
             </div>
         </div>
     </div>
+    <div id="newItem" class="modal hide fade" role="dialog">
+     <div class="modal-dialog modal-sm">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Add Item</h4>
+         </div>
+         <div class="modal-body">
+           <?php
+           //$addlist = db_addlist();
+           $listcount++;
+           $sqlgetgroups="SELECT * FROM shop_pgroups";
+           $resultgrp = db_query($sqlgetgroups);
+           if($resultgrp  != true){echo $resultgrp;}
+           print "
+           <form action=\"index.php\" method=\"get\">
+           <input type=\"number\" class=\"form-control input-text input-sm\" placeholder=\"Quantity\" value=\"1\" name=\"quan\"><br>
+           <input type=\"text\" class=\"form-control input-text input-sm\" placeholder=\"Name\" name=\"name\"><br>
+           <input type=\"number\" step=\"any\" class=\"form-control input-text input-sm\" placeholder=\"Price\" name=\"price\"><br>
+           <select class=\"form-control\" name=\"aisle\" placeholder=\"Aisle\">
+           <option></option>
+           <option>1A</option>
+           <option>2A</option>
+           <option>3A</option>
+           <option>4A</option>
+           <option>4B</option>
+           <option>5A</option>
+           <option>6A</option>
+           <option>7A</option>
+           <option>13A</option>
+           <option>13B</option>
+           <option>14A</option>
+           <option>14B</option>
+           <option>15A</option>
+           <option>15B</option>
+           <option>16A</option>
+           <option>16B</option>
+           <option>17A</option>
+           <option>17B</option>
+           <option>18A</option>
+           <option>18B</option>
+           <option>19A</option>
+           <option>19B</option>
+           <option>20</option>
+           <option>21</option>
+           <option>22</option>
+           <option>Beverage Center</option>
+           <option>Frozen</option>
+           <option>Deli</option>
+           <option>Dairy</option>
+           <option>Bakery</option>
+           <option>Seafood</option>
+           <option>Meat</option>
+           <option>Alcohol</option>
+           <option>Produce</option>
+           </select><br />
+           <select class=\"form-control\" name=\"group\" placeholder=\"Product Type\">
+           <option></option>";
+           while($rowgrp=$resultgrp->fetch_assoc()){
+             echo "<option value='$rowgrp[name]'>$rowgrp[name]</option>";
+           }
+           echo"
+           </select><br />
+           <input type=\"submit\" name=\"submit\" class=\"btn btn-primary btn\" value=\"Add Item\" />
+           <input type=\"hidden\" name=\"addby\" value=\"$_SESSION[name]\"><br>
+           <input type=\"hidden\" name=\"time\" value=\"$currtime\"><br>
+           <input type=\"hidden\" name=\"id\" value=\"" . db_nextid() . "\"><br>
+           <input type=\"hidden\" name=\"date\" value=\"$sqldate\"><br>
+           </form>";
+
+             //  print "<form action=\"index.php\" method=\"get\"><h1>Remove List Item</h1>List #: <input type=\"text\" name=\"removelistid\"><br><input type=\"submit\" name=\"submit\" value=\"Remove Item\" /></form>";
+            ?>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+    </div>
+
+   <div id="NewList" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Create New List</h4>
+        </div>
+        <div class="modal-body">
+          <?php
+          print "<form action=\"includes/newlist.php\" method=\"post\">
+          <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"List Name\"><br>
+          <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Store List\"><br>
+        </form>";
+        ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+   </div>
+  <div id="NewGroup" class="modal fade" role="dialog">
+   <div class="modal-dialog modal-sm">
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Create New Group</h4>
+       </div>
+       <div class="modal-body">
+         <?php
+         print "<form action=\"includes/creategroup.php\" method=\"post\">
+         <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Group Name\"><br>
+         <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Create\"><br>
+       </form>";
+       ?>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+
+   </div>
+  </div>
+
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
           <div class='copy-text'>
@@ -284,8 +293,6 @@ nav_check();
           </div>
         </div>
       </div>
-    <!-- jQuery Version 4.x.x -->
-    <script src="js/jquery.js"></script>
     <script>
     function confirmDelete(del_id,name){
       var conf = confirm("Are you sure you want to delete " + name +"?");
@@ -295,7 +302,8 @@ nav_check();
       }
     }
     </script>
-    <!-- Bootstrap Core JavaScript -->
+    <script src="js/jquery.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
 </body>
