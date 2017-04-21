@@ -16,35 +16,6 @@ $date = date('m/d/Y', time());
   if (isset($_POST['signin'])){
     sign_in();
   }
-  function sign_in(){
-    $error='good';
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $username = cleanup($username);
-    $password = cleanup($password);
-    if (empty($password)){
-      $error = 'pass';
-    }else{
-      $password = hash('sha256', $password);
-    }
-    if (empty($username)){
-      $error = 'user';
-    }
-    if ($error =='good'){
-      if (login_user($username,$password) == true){
-        unset($username);
-        unset($password);
-        if(ismobile()){
-          header("Location: " . redirecturl() ."/mobile.php");
-        }else {
-          header("Location: " . redirecturl() ."/index.php");
-        }
-      }else{
-
-      }
-
-    }
-  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +34,7 @@ $date = date('m/d/Y', time());
     <link href="css/stylesheet.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-    body {padding-top: 70px;} .form-control{width:100%;}.login-cont{margin-left:35%;margin-right:35%;}.btn-primary{margin-left:5vw;}
+    .form-control{width:100%;}.login-cont{margin-left:35%;margin-right:35%;}.btn-primary{margin-left:5vw;}
     </style>
 
 </head>
@@ -71,22 +42,15 @@ $date = date('m/d/Y', time());
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <div class="container">
-            <a class="navbar-brand" href="welcome.php">Sign In</a>
-            <button class="navbar-toggler hidden-md-up float-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
-            <!-- Clearfix with a utility class added to allow for better navbar responsiveness. -->
-            <div class="clearfix hidden-md-up"></div>
-            <div class="collapse navbar-toggleable-sm" id="navbarResponsive">
-                <ul class="nav navbar-nav float-md-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.php">Register</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Sign In</a>
+        <ul class="nav">
+          <li><a href="register.php">Register</a></li>
+        </ul>
+      </div>
+    </div>
     <!-- Page Content -->
     <div class="container">
         <div class="row">

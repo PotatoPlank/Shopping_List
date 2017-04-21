@@ -54,4 +54,33 @@ Function build_footer(){
     echo '<a href="index.php?desktop=y" class="navbar-btn btn-danger btn pull-right"><span class="glyphicon glyphicon-star"></span>Desktop</a>   ';
   }
 }
+function sign_in(){
+  $error='good';
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $username = cleanup($username);
+  $password = cleanup($password);
+  if (empty($password)){
+    $error = 'pass';
+  }else{
+    $password = hash('sha256', $password);
+  }
+  if (empty($username)){
+    $error = 'user';
+  }
+  if ($error =='good'){
+    if (login_user($username,$password) == true){
+      unset($username);
+      unset($password);
+      if(ismobile()){
+        header("Location: " . redirecturl() ."/mobile.php");
+      }else {
+        header("Location: " . redirecturl() ."/index.php");
+      }
+    }else{
+
+    }
+
+  }
+}
  ?>

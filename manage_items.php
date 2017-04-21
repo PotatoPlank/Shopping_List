@@ -9,6 +9,26 @@ require("includes/functions.php");
 if (!isset($_SESSION['user']) or $_SESSION['user']==''){
   header("Location: " . redirecturl() ."/welcome.php");
 }
+if(isset($_GET['store'])){
+  $storeSelected = $_GET['store'];
+  $sqlStore="SELECT * FROM stores WHERE store_id = $storeSelected";
+  $result = db_query($sqlStore);
+  if(mysqli_num_rows($result)>0){
+    while ($row=$result->fetch_assoc()) {
+      $storeID = $row['store_id'];
+      $storeName = $row['store_name'];
+      $storeLocation = $row['store_loc'];
+      $aisles = $row['aisles'];
+      $aislesSelected = explode(",", $aisles);
+      $aisleCountSelected = mysqli_num_rows($result);
+      $storeDropdown="$storeName @ $storeLocation";
+    }
+  }else{
+    $storeDropdown="Select Store";
+  }
+}else{
+  $storeDropdown="Select Store";
+}
 $platform='';
  ?>
 <head>
@@ -22,6 +42,7 @@ $platform='';
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
     <style>
+    .page-content{}
     </style>
 </head>
 <body>
@@ -29,36 +50,42 @@ $platform='';
       <div class="navbar-inner">
         <a class="brand" href="#">Shopping List</a>
         <ul class="nav">
-          <li class="active"><a href="index.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li class="active"><a href="index.php">Manage Items</a></li>
           <li><a href="cart.php">Manage Cart</a></li>
         </ul>
       </div>
     </div>
-    <div class="container">
-        <div class="row">
+    <div class="container-page" style="margin-left:auto;margin-right:auto;width:50%;text-align:center;">
+        <div class="row" style="">
             <div class="">
               <h1>Manage Items</h1>
               <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  Dropdown
+                  <?php echo $storeDropdown; ?>
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <?php
+                  $sqlStores = "SELECT * FROM stores";
+                  $result = db_query($sqlStores);
+                  if($result != true){echo $result;}
+                  if(mysqli_num_rows($result)>0){
+                    while ($row=$result->fetch_assoc()) {
+                      $storeID = $row['store_id'];
+                      $storeName = $row['store_name'];
+                      $storeLocation = $row['store_loc'];
+                      $aisles = $row['aisles'];
+                      $aisles = explode(",", $aisles);
+                      $aisleCount = count($aisles);
+                      echo "<li><a href='manage_items.php?store=$storeID'>$storeName($aisleCount aisles)</a></li>";
+                    }
+                  }else{
+                    echo "<li><a href=''>No Stores Are Being Managed</a></li>";
+                  }
+                   ?>
                 </ul>
               </div>
-              <?php
-              $sqlStores = "SELECT * FROM stores";
-              $result = db_query($sqlStores);
-              if($result != true){echo $result;}
-              while ($row=$result->fetch_assoc()) {
-
-              }
-               ?>
                <div id="newItem" class="modal hide fade" role="dialog">
                 <div class="modal-dialog modal-sm">
 
@@ -98,32 +125,47 @@ $platform='';
                 </div>
             </div>
         </div>
+        <div class="aisles">
+          <?php
+          if($aisleCountSelected>0){
+            print '<table class="listtable">';
+            print '<th>Aisle Name</th>';
+            foreach($aislesSelected as $a){
+              echo "<tr><td>$a</td></tr>";
+            }
+            print '</table>';
+          }else{
+            echo "There are no aisles for this store!";
+          }
+          ?>
+          <button type="button" class="btn btn-primary btn-lg" style="margin:auto;display:block;" data-toggle="modal" data-target="#newAisle">Add New Aisle</button>
+        </div>
     </div>
-  </div>
-  <div id="NewList" class="modal fade" role="dialog">
-   <div class="modal-dialog modal-sm">
 
-     <!-- Modal content-->
-     <div class="modal-content">
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal">&times;</button>
-         <h4 class="modal-title">Create New List</h4>
+    <div id="newAisle" class="modal hide fade" role="dialog">
+     <div class="modal-dialog modal-sm">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Add New Aisle</h4>
+         </div>
+         <div class="modal-body">
+           <?php
+           print "<form action=\"manage_items.php\" method=\"post\">
+           <input type='hidden' name='store_id' value='$storeSelected' />
+           <input type=\"text\" class=\"form-control input-text input-sm\" name=\"aisle\" placeholder=\"Aisle Number\"><br>
+           <input type=\"submit\" class=\"btn btn-primary btn\" name=\"submit\" value=\"Store List\"><br>
+         </form>";
+         ?>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
        </div>
-       <div class="modal-body">
-         <?php
-         print "<form action=\"includes/newlist.php\" method=\"post\">
-         <input type=\"text\" class=\"form-control input-text input-sm\" name=\"name\" placeholder=\"Listname\"><br>
-         <input type=\"submit\" class=\"btn btn-primary btn\" name=\"newlist\" value=\"Store List\"><br>
-       </form>";
-       ?>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       </div>
+
      </div>
+    </div>
 
-   </div>
- </div>
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
           <div class='copy-text'>
